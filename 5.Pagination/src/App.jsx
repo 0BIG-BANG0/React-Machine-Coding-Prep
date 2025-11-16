@@ -224,7 +224,7 @@ function App(todo) {
         {currentItems.map((todo) => (
           <ul>
             <li>
-              {todo.id}-{todo.todo}-<strong>{String(todo.completed)}</strong>
+              {todo.id}-{todo.todo}-<strong>{todo.completed ? '✅' : '❌'}</strong>
             </li>
           </ul>
         ))}
