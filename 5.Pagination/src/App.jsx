@@ -1,5 +1,7 @@
 import React from "react";
-import { useState } from "react";
+
+import OffsetPagination from "./component/1OffsetPagination";
+import InfiniteScroll from "./component/2InfiniteScroll";
 const todos = [
   {
     id: 1,
@@ -185,72 +187,15 @@ const todos = [
 function App(todo) {
   const activeList = todos;
 
-  //pagination always need 2 main pieces of state
-  // 1.current page and items perpage
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(6);
-
-  //some derived values like totalPages - these are calculations
-  const totalPages = Math.ceil(activeList.length / itemsPerPage);
-
-  //indexofLast and indexofFirst
-  const indexOfLast = currentPage * itemsPerPage;
-  const indexOfFirst = indexOfLast - itemsPerPage;
-
-  //currentItems- are the items that we display on the UI
-  const currentItems = activeList.slice(indexOfFirst, indexOfLast);
-
   return (
     <>
       <div>
-        <label htmlFor="">
-          Items per page:{" "}
-          <select
-            value={itemsPerPage}
-            onChange={(e) => {
-              setItemsPerPage(Number(e.target.value));
-              setCurrentPage(1); //nice UX : rest to 1 when page sie changes
-            }}
-          >
-            {[5, 6, 10, 15].map((n) => (
-              <option key={n} value={n}>
-                {n}
-              </option>
-            ))}
-          </select>
-        </label>
+        <h1>1. OffsetPagination</h1>
+        <OffsetPagination todos={todos} />
       </div>
       <div>
-        {currentItems.map((todo) => (
-          <ul>
-            <li>
-              {todo.id}-{todo.todo}-<strong>{todo.completed ? '✅' : '❌'}</strong>
-            </li>
-          </ul>
-        ))}
-      </div>
-      <div>
-        <button
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          Prev
-        </button>
-        {/* Adding buttons of specific page */}
-        {[...Array(totalPages)].map((_, i) => {
-          const page = i + 1;
-          return (
-            <button key={page} onClick={() => setCurrentPage(page)}>
-              {page}
-            </button>
-          );
-        })}
-        <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
+        <h1>2. InfinitePagination</h1>
+        <InfiniteScroll todos={todos} />
       </div>
     </>
   );
